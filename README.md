@@ -6,14 +6,20 @@ CVPR 2024
 
 ## Set-up
 
-1. Create and activate a conda environment :
+1. Download code :
+
+```
+git clone git@github.com:dragonylee/FaceCom.git
+```
+
+2. Create and activate a conda environment :
 
 ```
 conda create -n FaceCom python=3.10
 conda activate FaceCom
 ```
 
-2. Install dependencies using `pip` or `conda` :
+3. Install dependencies using `pip` or `conda` :
 
 - [pytorch](https://pytorch.org/get-started/locally/)
 
@@ -48,12 +54,6 @@ conda activate FaceCom
   ```
 
   You will find that after the installation, there is only `quad_mesh_simplify-1.1.5.dist-info` under the `site-packages` folder of your Python environment. Therefore, you also need to copy the `quad_mesh_simplify` folder from the [GitHub repository](https://github.com/jannessm/quadric-mesh-simplification) to the `site-packages` folder.
-
-3. Download code :
-
-```
-git clone git@github.com:dragonylee/FaceCom.git
-```
 
 <br>
 
