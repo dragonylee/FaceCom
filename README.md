@@ -52,7 +52,7 @@ conda activate FaceCom
 3. Download code :
 
 ```
-git clone 
+git clone git@github.com:dragonylee/FaceCom.git
 ```
 
 <br>
