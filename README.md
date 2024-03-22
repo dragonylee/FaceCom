@@ -37,7 +37,7 @@ conda activate FaceCom
 - [torch_geometric](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html) & trimesh & [quad_mesh_simplify](https://github.com/jannessm/quadric-mesh-simplification)
 
   ```
-  pip install torch_geometric, trimesh, quad_mesh_simplify
+  pip install torch_geometric trimesh quad_mesh_simplify
   ```
 
   You will find that after the installation, there is only `quad_mesh_simplify-1.1.5.dist-info` under the `site-packages` folder of your Python environment. Therefore, you also need to copy the `quad_mesh_simplify` folder from the [GitHub repository](https://github.com/jannessm/quadric-mesh-simplification) to the `site-packages` folder.
