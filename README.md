@@ -9,7 +9,7 @@ CVPR 2024
 1. Download code :
 
 ```
-git clone git@github.com:dragonylee/FaceCom.git
+git clone https://github.com/dragonylee/FaceCom.git
 ```
 
 2. Create and activate a conda environment :
