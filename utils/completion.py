@@ -45,14 +45,16 @@ def rigid_registration(in_mesh, config, verbose=True):
     if verbose:
         print("rigid registration...")
 
-    mesh = in_mesh.copy()
+    # mesh = in_mesh.copy()
+    mesh = in_mesh
     template_mesh = load_mesh(config["template"])
 
+    centroid = mesh.centroid
     mesh.vertices -= mesh.centroid
     T, _, _ = icp(mesh.vertices, template_mesh.vertices, max_iterations=50)
     mesh.apply_transform(T)
 
-    return mesh
+    return mesh, T, centroid
 
 
 def fit(in_mesh, generator, config, device, max_iters=1000, loss_convergence=1e-6, lambda_reg=None,
@@ -340,10 +342,16 @@ def facial_mesh_completion(in_file, out_file, config, generator, lambda_reg=None
     mesh_in = load_mesh(in_file)
 
     if rr:
-        mesh_in = rigid_registration(mesh_in, config, verbose=verbose)
+        mesh_in, T, centroid = rigid_registration(mesh_in, config, verbose=verbose)
+
+    # save_ply_explicit(mesh_in, "rr.ply")
 
     mesh_fit = fit(mesh_in, generator, config, device, lambda_reg=lambda_reg, verbose=verbose, loss_convergence=1e-7,
                    dis_percent=dis_percent)
     mesh_com = post_processing(mesh_fit, mesh_in, device, verbose=verbose)
+
+    if rr:
+        mesh_com.apply_transform(np.linalg.inv(T))
+        mesh_com.vertices += centroid
 
     save_ply_explicit(mesh_com, out_file)
