@@ -134,7 +134,7 @@ def generate_transform_matrices_trimesh(mesh: Trimesh, factors: List[float]):
 
 
 def get_mesh_matrices(config):
-    template_mesh = load_mesh(config["template"])
+    template_mesh = load_mesh(config["template_file"])
     _, A, D, U = generate_transform_matrices_trimesh(
         template_mesh, config["down_sampling_factors"]
     )
@@ -158,7 +158,7 @@ def load_generator(config):
 
 
 def load_norm(config):
-    norm_dict = torch.load(join(config['data_dir'], "norm.pt"))
+    norm_dict = torch.load(join(config['dataset_dir'], "norm.pt"))
     return norm_dict['mean'], norm_dict['std']
 
 

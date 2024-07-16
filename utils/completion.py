@@ -36,7 +36,7 @@ def generate_face_sample(out_file, config, generator):
     mean, std = load_norm(config)
     out = generator(z.to(device), 1).detach().cpu()
     out = out * std + mean
-    template_mesh = load_mesh(config["template"])
+    template_mesh = load_mesh(config["template_file"])
     mesh = Trimesh(out, template_mesh.faces)
     save_ply_explicit(mesh, out_file)
 
@@ -47,11 +47,11 @@ def rigid_registration(in_mesh, config, verbose=True):
 
     # mesh = in_mesh.copy()
     mesh = in_mesh
-    template_mesh = load_mesh(config["template"])
+    template_mesh = load_mesh(config["template_file"])
 
     centroid = mesh.centroid
     mesh.vertices -= mesh.centroid
-    T, _, _ = icp(mesh.vertices, template_mesh.vertices, max_iterations=50)
+    T, _, _ = icp(mesh.vertices, template_mesh.vertices, max_iterations=50, scale=False)
     mesh.apply_transform(T)
 
     return mesh, T, centroid
@@ -64,7 +64,7 @@ def fit(in_mesh, generator, config, device, max_iters=1000, loss_convergence=1e-
         sys.stdout.flush()
 
     mesh = in_mesh.copy()
-    template_mesh = load_mesh(config["template"])
+    template_mesh = load_mesh(config["template_file"])
 
     generator.eval()
 

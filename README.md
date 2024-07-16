@@ -4,6 +4,22 @@ CVPR 2024
 
 <br>
 
+## Methods and Results
+
+#### Method Overview
+
+<img src="./assets/image-20240716144509692.png" alt="image-20240716144509692" style="zoom: 50%;" />
+
+#### Fitting results with only Shape Generator
+
+![image-20240716144300162](./assets/image-20240716144300162.png)
+
+#### Shape completion results
+
+![image-20240716144812434](./assets/image-20240716144812434.png)
+
+<br>
+
 ## Set-up
 
 1. Download code :
@@ -46,23 +62,35 @@ conda activate FaceCom
 
 ## Data
 
-We trained our network using a structured hybrid 3D face dataset, which includes [Facescape](https://facescape.nju.edu.cn/) and [HeadSpace](https://www-users.york.ac.uk/~np7/research/Headspace/) datasets (under permissions), as well as our own dataset collected from hospitals. Due to certain reasons, the data we collected cannot be made public temporarily. Therefore, the method for training the model is not disclosed for the time being (If needed, we will provide it soon).
+We trained our network using a structured hybrid 3D face dataset, which includes [Facescape](https://facescape.nju.edu.cn/) and [HeadSpace](https://www-users.york.ac.uk/~np7/research/Headspace/) datasets (under permissions), as well as our own dataset collected from hospitals. Due to certain reasons, the data we collected cannot be made public temporarily. Therefore, the method for training the model is not disclosed for the time being.
 
 You can download our pre-trained model `checkpoint_decoder.pt` ([Google Drive](https://drive.google.com/file/d/1oPfWRPgCXjAffPJWfZyZyZOgd5EYPrHf/view?usp=drive_link)|[百度网盘](https://pan.baidu.com/s/1SsBW08yieLTCbK9ec6EnwA?pwd=z4vc)) and put it in `data` folder.
 
 <br>
 
-## Usages
+## Config
 
 After downloading the pre-trained model, you need to modify the project path of the first three lines of `config/config.cfg` 
 
 ```
-template = PATH_TO_THE_PROJECT/data/template.ply
-data_dir = PATH_TO_THE_PROJECT/data
-checkpoint_dir = PATH_TO_THE_PROJECT/data
+dataset_dir = PATH_TO_THE_PROJECT\data
+template_file = PATH_TO_THE_PROJECT\data\template.ply
+checkpoint_dir = PATH_TO_THE_PROJECT\data
 ```
 
-to match your own environment. Then, you can thoroughly test with the scripts we provide below.
+to match your own environment. If you create a new config file using the provided `config.cfg`, these three parameters should respectively satisfy the following conditions:
+
+1. `dataset_dir` should contain the `norm.pt` file (if you intend to train, it should also include a `train` folder, with all training data placed inside the `train` folder).
+2. `template_file` should be the path to the template file.
+3. `checkpoint_dir` should be the folder containing the model parameter files.
+
+The provided `config.cfg` file and the corresponding `data` folder can be used normally after downloading the pre-trained model described in [Data](#data).
+
+<br>
+
+## Usages
+
+ After setting up the config file, you can thoroughly test with the scripts we provide below.
 
 ### Random Sample
 
@@ -91,3 +119,74 @@ where `--in_file` is a file that trimesh can read, with no requirements on topol
 ### Mesh Fit / Non-rigid Registration
 
 When the input is a complete facial model without any defects, the script in the "Facial Shape Completion" section will actually output a fitting result to the input. Since the topology of our method's output is consistent, it can also be used for non-rigid registration.
+
+<br>
+
+## Train
+
+After preparing the dataset with unified topology, you can train a shape generator using the code we provided. First, determine a dataset folder path `A`, then create or modify the config file, changing the first three lines to
+
+```
+dataset_dir = A
+template_file = A\template.ply
+checkpoint_dir = A
+```
+
+You may pre-select the test data that will not be used for training, and then place the remaining training data in the `train` subfolder within the folder `A`. That is to say, before training, the directory structure of folder `A` should be as follows:
+
+```
+A/
+├── train/
+│   ├── training_data_1.ply
+│   ├── training_data_2.ply
+│   └── ...
+```
+
+Then you can start training using the script below:
+
+```
+python scripts/train.py --config_file config/config.cfg
+```
+
+During training, the structure of folder `A` will look like this, with the average of the training data generated as a template:
+
+```
+A/
+├── train/
+│   ├── training_data_1
+│   ├── training_data_2
+│   └── ...
+└── template.ply
+└── norm.pt
+└── checkpoint_decoder.pt
+```
+
+These results are sufficient for the usage described in [Usages](#usages).
+
+<br>
+
+## Citations
+
+If you find our work helpful, please cite us
+
+```
+@inproceedings{li2024facecom,
+  title={FaceCom: Towards High-fidelity 3D Facial Shape Completion via Optimization and Inpainting Guidance},
+  author={Li, Yinglong and Wu, Hongyu and Wang, Xiaogang and Qin, Qingzhao and Zhao, Yijiao and Wang, Yong and Hao, Aimin},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={2177--2186},
+  year={2024}
+}
+```
+
+or
+
+```
+@article{li2024facecom,
+  title={FaceCom: Towards High-fidelity 3D Facial Shape Completion via Optimization and Inpainting Guidance},
+  author={Li, Yinglong and Wu, Hongyu and Wang, Xiaogang and Qin, Qingzhao and Zhao, Yijiao and Hao, Aimin and others},
+  journal={arXiv preprint arXiv:2406.02074},
+  year={2024}
+}
+```
+

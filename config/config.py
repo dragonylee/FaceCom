@@ -7,8 +7,8 @@ def read_config(file_name):
 
     config_parms = {}
 
-    config_parms['template'] = config.get('I/O parameters', 'template')
-    config_parms['data_dir'] = config.get('I/O parameters', 'data_dir')
+    config_parms['dataset_dir'] = config.get('I/O parameters', 'dataset_dir')
+    config_parms['template_file'] = config.get('I/O parameters', 'template_file')
     config_parms['checkpoint_dir'] = config.get('I/O parameters', 'checkpoint_dir')
 
     config_parms['n_layers'] = config.getint('model parameters', 'n_layers')
