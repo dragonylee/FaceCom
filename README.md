@@ -80,7 +80,7 @@ checkpoint_dir = PATH_TO_THE_PROJECT\data
 
 to match your own environment. If you create a new config file using the provided `config.cfg`, these three parameters should respectively satisfy the following conditions:
 
-1. `dataset_dir` should contain the `norm.pt` file (if you intend to train, it should also include a `train` folder, with all training data placed inside the `train` folder).
+1. `dataset_dir` should contain the `norm.pt` file (if you intend to train, it should include a `train` folder instead, with all training data placed inside the `train` folder).
 2. `template_file` should be the path to the template file.
 3. `checkpoint_dir` should be the folder containing the model parameter files.
 

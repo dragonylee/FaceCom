@@ -51,7 +51,7 @@ def rigid_registration(in_mesh, config, verbose=True):
 
     centroid = mesh.centroid
     mesh.vertices -= mesh.centroid
-    T, _, _ = icp(mesh.vertices, template_mesh.vertices, max_iterations=50, scale=False)
+    T, _, _ = icp(mesh.vertices, template_mesh.vertices, max_iterations=50)
     mesh.apply_transform(T)
 
     return mesh, T, centroid
